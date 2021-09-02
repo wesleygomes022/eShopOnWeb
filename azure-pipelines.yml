@@ -20,7 +20,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'custom'
-    arguments: 'dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.9'
+    arguments: '<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />'
 
 - task: NuGetCommand@2
   inputs:
