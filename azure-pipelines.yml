@@ -20,7 +20,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'custom'
-    arguments: 'paket add Microsoft.EntityFrameworkCore.SqlServer --version 5.0.9'
+    arguments: '#r "nuget: Microsoft.EntityFrameworkCore.SqlServer, 5.0.9"'
 
 - task: NuGetCommand@2
   inputs:
