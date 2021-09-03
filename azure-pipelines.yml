@@ -39,6 +39,7 @@ steps:
     arguments: '--no-build --configuration $(buildconfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Publishing Artifacts'
   inputs:
     command: 'publish'
     publishWebProjects: true 
@@ -46,6 +47,7 @@ steps:
     zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Pushing Artifacts to Azure DevOps'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
