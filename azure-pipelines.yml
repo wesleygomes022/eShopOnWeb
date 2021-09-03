@@ -18,6 +18,7 @@ steps:
 - task: NuGetToolInstaller@1
 
 - task: DotNetCoreCLI@2
+  displayName: 
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
@@ -25,6 +26,7 @@ steps:
     vstsFeed: '6a56f8d0-da8a-4f62-978a-07240981baed'
     
 - task: VSBuild@1
+  displayName: 'Building the Application' 
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
@@ -36,7 +38,8 @@ steps:
   inputs:
     command: 'test'
     #projects: '**/UnitTests.csproj'
-    projects: '$(Build.SourcesDirectory)/tests/UnitTests/*.csproj'
+    #projects: '$(Build.SourcesDirectory)/tests/UnitTests/*.csproj'
+    projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
     arguments: '--no-build --configuration $(buildconfiguration)'
 
 - task: DotNetCoreCLI@2
