@@ -38,8 +38,8 @@ steps:
   inputs:
     command: 'test'
     #projects: '**/UnitTests.csproj'
-    #projects: '$(Build.SourcesDirectory)/tests/UnitTests/*.csproj'
-    projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
+    projects: '$(Build.SourcesDirectory)/**/UnitTests.csproj'
+    #projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
     arguments: '--no-build --configuration $(buildconfiguration)'
 
 - task: DotNetCoreCLI@2
