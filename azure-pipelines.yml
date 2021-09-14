@@ -14,45 +14,73 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: NuGetToolInstaller@1  
+    - task: DotNetCoreCLI@2
+      displayName: 
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+        vstsFeed: '6a56f8d0-da8a-4f62-978a-07240981baed'  
+    - task: VSBuild@1
+      displayName: 'Building the Application' 
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'  
+    - task: DotNetCoreCLI@2
+      displayName: 'Run unit tests - $(buildConfiguration)'
+      inputs:
+        command: 'test'
+        #projects: '**/UnitTests.csproj'
+        projects: '$(Build.SourcesDirectory)/**/UnitTests.csproj'
+        #projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
+        arguments: '--no-build --configuration $(buildconfiguration)'  
+    - task: DotNetCoreCLI@2
+      displayName: 'Publishing Artifacts'
+      inputs:
+        command: 'publish'
+        publishWebProjects: true 
+        projects: '$(solution)'
+        zipAfterPublish: True  
+    - task: PublishBuildArtifacts@1
+      displayName: 'Pushing Artifacts to Azure DevOps'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+        
 
-- task: DotNetCoreCLI@2
-  displayName: 
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    feedsToUse: 'select'
-    vstsFeed: '6a56f8d0-da8a-4f62-978a-07240981baed'
-    
-- task: VSBuild@1
-  displayName: 'Building the Application' 
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- stage: createWebApp
+  jobs:
+  - job: createWebApp
 
-- task: DotNetCoreCLI@2
-  displayName: 'Run unit tests - $(buildConfiguration)'
-  inputs:
-    command: 'test'
-    #projects: '**/UnitTests.csproj'
-    projects: '$(Build.SourcesDirectory)/**/UnitTests.csproj'
-    #projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
-    arguments: '--no-build --configuration $(buildconfiguration)'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Publishing Artifacts'
-  inputs:
-    command: 'publish'
-    publishWebProjects: true 
-    projects: '$(solution)'
-    zipAfterPublish: True
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Pushing Artifacts to Azure DevOps'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+ 
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps: 
+    - task: CopyFiles@2
+      displayName: 'coping ARM Template to Agent Folder'
+      inputs:
+        SourceFolder: 'eShopOnWeb/arm-template/'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'Deploying Web App with ARM Template'
+      inputs:
+        deploymentScope: 'Subscription'
+        azureResourceManagerConnection: 'Assinatura do Visual Studio Enterprise (d138174f-0a3d-4d0b-b9fa-3afcf684e700)'
+        subscriptionId: 'd138174f-0a3d-4d0b-b9fa-3afcf684e700'
+        location: 'Brazil South'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.json'
+        csmParametersFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.parameters.json'
+        deploymentMode: 'Incremental'
