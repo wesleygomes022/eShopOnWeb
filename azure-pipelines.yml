@@ -57,22 +57,10 @@ stages:
         publishLocation: 'Container'
         
 
-- stage: createWebApp
+- stage: CreateWebApp
   jobs:
-  - job: createWebApp
-
- 
-- stage: Deploy
-  jobs:
-  - job: Deploy
-    steps: 
-    - task: CopyFiles@2
-      displayName: 'coping ARM Template to Agent Folder'
-      inputs:
-        SourceFolder: 'eShopOnWeb/arm-template/'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        
+  - job: CreateWebApp
+    steps:        
     - task: AzureResourceManagerTemplateDeployment@3
       displayName: 'Deploying Web App with ARM Template'
       inputs:
@@ -81,6 +69,6 @@ stages:
         subscriptionId: 'd138174f-0a3d-4d0b-b9fa-3afcf684e700'
         location: 'Brazil South'
         templateLocation: 'Linked artifact'
-        csmFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.json'
-        csmParametersFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.parameters.json'
+        csmFile: 'Build.SourcesDirectory/arm-template/azuredeploy.json'
+        csmParametersFile: 'Build.SourcesDirectory/arm-template/azuredeploy.parameters.json'
         deploymentMode: 'Incremental'
