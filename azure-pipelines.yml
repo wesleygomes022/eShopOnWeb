@@ -34,6 +34,14 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'  
+
+    - task: CopyFiles@2
+      displayName: 'copying the Arm template files to Artifacts folder'
+      inputs:
+        SourceFolder: 'ArmTemplate/'
+        Contents: 'azuredeploy*.json'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      
     - task: DotNetCoreCLI@2
       displayName: 'Run unit tests - $(buildConfiguration)'
       inputs:
@@ -55,20 +63,3 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-        
-
-- stage: CreateWebApp
-  jobs:
-  - job: CreateWebApp
-    steps:        
-    - task: AzureResourceManagerTemplateDeployment@3
-      displayName: 'Deploying Web App with ARM Template'
-      inputs:
-        deploymentScope: 'Subscription'
-        azureResourceManagerConnection: 'Assinatura do Visual Studio Enterprise (d138174f-0a3d-4d0b-b9fa-3afcf684e700)'
-        subscriptionId: 'd138174f-0a3d-4d0b-b9fa-3afcf684e700'
-        location: 'Brazil South'
-        templateLocation: 'Linked artifact'
-        csmFile: 'Build.SourcesDirectory/arm-template/azuredeploy.json'
-        csmParametersFile: 'Build.SourcesDirectory/arm-template/azuredeploy.parameters.json'
-        deploymentMode: 'Incremental'
