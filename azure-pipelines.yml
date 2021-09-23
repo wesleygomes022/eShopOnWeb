@@ -39,7 +39,7 @@ stages:
       inputs:
         command: 'build'
         projects: '$(Build.SourcesDirectory)/src/Web/*eb.csproj'
-        arguments: '--configuration: Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        arguments: '--configuration Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     - task: CopyFiles@2
       displayName: 'Copying the Arm template files to Artifacts folder'
       inputs:
