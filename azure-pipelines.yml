@@ -27,14 +27,19 @@ stages:
         projects: '**/*.csproj'
         feedsToUse: 'select'
         vstsFeed: '6a56f8d0-da8a-4f62-978a-07240981baed'  
-    - task: VSBuild@1
-      displayName: 'Building the Application' 
-      inputs:
-        solution: '$(solution)'
-        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'  
+#    - task: VSBuild@1
+#      displayName: 'Building the Application' 
+#      inputs:
+#        solution: '$(solution)'
+#        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+#        platform: '$(buildPlatform)'
+#        configuration: '$(buildConfiguration)'  
 
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '$(Build.SourcesDirectory)/src/Web/Web.csproj'
+        arguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     - task: CopyFiles@2
       displayName: 'copying the Arm template files to Artifacts folder'
       inputs:
