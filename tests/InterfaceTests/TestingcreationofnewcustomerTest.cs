@@ -25,12 +25,13 @@ public class SuiteTests : IDisposable {
     driver.Quit();
   }
   [Fact]
-  public void Testingcreationofnewcustomer() {
+  public void Testingcreationofnewcustomer() 
+  {
     // Test name: testing - creation of new customer
     // Step # | name | target | value
     // 1 | open | / | 
     // Abrindo o web app
-    driver.Navigate().GoToUrl("https://localhost:44315/");
+    driver.Navigate().GoToUrl("https://dev-env1221.azurewebsites.net/");
     // 2 | setWindowSize | 1382x744 | 
     // Expande tamanho do browser window
     driver.Manage().Window.Size = new System.Drawing.Size(1382, 744);
@@ -58,5 +59,11 @@ public class SuiteTests : IDisposable {
     // 10 | click | css=.btn | 
     // click - Register
     driver.FindElement(By.CssSelector(".btn")).Click();
+  }
+
+  [Fact]
+  public void MyTestCleanup()
+  {
+     driver.Quit();
   }
 }
