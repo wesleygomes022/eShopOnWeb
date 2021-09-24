@@ -23,7 +23,7 @@ stages:
       displayName: 'Nuget Restore'
       inputs:
         command: 'restore'
-        projects: '**/*.csproj'
+        projects: '$(solution)'
         feedsToUse: 'select'
         vstsFeed: '6a56f8d0-da8a-4f62-978a-07240981baed'  
 #    - task: VSBuild@1
@@ -38,7 +38,7 @@ stages:
       displayName: 'Build Application'
       inputs:
         command: 'build'
-        projects: '$(Build.SourcesDirectory)/src/Web/*eb.csproj'
+        projects: '$(solution)'
         arguments: '--configuration Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     - task: CopyFiles@2
       displayName: 'Copying the Arm template files to Artifacts folder'
@@ -54,7 +54,7 @@ stages:
         #projects: '**/UnitTests.csproj'
         projects: '$(Build.SourcesDirectory)/**/UnitTests.csproj'
         #projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
-        arguments: '--configuration $(buildconfiguration)'  
+        arguments: '--no-build --configuration $(buildconfiguration)'  
     - task: DotNetCoreCLI@2
       displayName: 'Publishing Artifacts'
       inputs:
