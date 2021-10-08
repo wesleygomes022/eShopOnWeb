@@ -41,8 +41,15 @@ stages:
         projects: |
           $(solution)
           **/InterfaceTests/*.csproj
-        arguments: '--configuration Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        arguments: '--configuration $(buildConfiguration) /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
          
+    - task: CopyFiles@2
+      displayName: copiando dll testes interface p/ a folder
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/tests/InterfaceTests/bin/$(buildConfiguration)/net5.0/'
+        Contents: 'InterfaceTests.dll'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/InterfaceTestsDLL/'
+
     - task: CopyFiles@2
       displayName: 'Copying the Arm template files to Artifacts folder'
       inputs:
