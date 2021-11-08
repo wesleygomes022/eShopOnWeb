@@ -34,6 +34,14 @@ stages:
 #        platform: '$(buildPlatform)'
 #        configuration: '$(buildConfiguration)'  
 
+    - task: SonarQubePrepare@5
+      displayName: "Prepare Analysis Configuration"
+      inputs:
+        SonarQube: 'SonarQube'
+        scannerMode: 'MSBuild'
+        projectKey: 'bb131a42ff076475e3f6df9cd5ee31d21eabbfcc'
+        projectName: 'eShopOnWeb'
+
     - task: DotNetCoreCLI@2
       displayName: 'Build Application'
       inputs:
@@ -41,6 +49,14 @@ stages:
         projects: $(solution)
         arguments: '--configuration $(buildConfiguration) /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
          
+    - task: SonarQubeAnalyze@5 
+      displayName: "Run Code Analysis"
+
+    - task: SonarQubePublish@5
+      displayName: "Publish Quality Result"
+      inputs:
+        pollingTimeoutSec: '300'
+
     - task: CopyFiles@2
       displayName: copiando dll testes interface p/ a folder
       inputs:
