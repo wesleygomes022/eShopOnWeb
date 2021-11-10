@@ -75,10 +75,8 @@ stages:
       displayName: 'Run unit tests - $(buildConfiguration)'
       inputs:
         command: 'test'
-        #projects: '**/UnitTests.csproj'
         projects: '$(Build.SourcesDirectory)/**/UnitTests.csproj'
-        #projects: '$(System.DefaultWorkingDirectory)/**/UnitTests.csproj'
-        arguments: '--no-build --configuration $(buildconfiguration)'  
+        arguments: '--no-build --collect "Code coverage" --configuration $(buildconfiguration)'
     - task: DotNetCoreCLI@2
       displayName: 'Publishing Artifacts'
       inputs:
