@@ -6,8 +6,7 @@
 trigger:
 - master
 
-pool:
-  Agent pool: Wesley Agent
+pool: Wesley Agent
 
 variables:
   solution: '**/*.sln'
