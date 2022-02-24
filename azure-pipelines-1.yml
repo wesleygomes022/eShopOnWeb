@@ -35,14 +35,8 @@ stages:
       inputs:
         command: 'publish'
         publishWebProjects: true 
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory\Web)'
         zipAfterPublish: True
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish to Az DevOps'
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop/Web'
 
 - stage: Build_API
   jobs:
@@ -65,11 +59,11 @@ stages:
       inputs:
         command: 'publish'
         publishWebProjects: true 
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory\API)'
         zipAfterPublish: True
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish to Az DevOps'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop/API'
+        ArtifactName: 'drop'
