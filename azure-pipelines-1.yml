@@ -72,4 +72,4 @@ stages:
       displayName: 'Publish to Az DevOps'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop/Web'
+        ArtifactName: 'drop/API'
