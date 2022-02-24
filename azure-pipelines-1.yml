@@ -28,7 +28,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: 'build'
-        projects: '**\src\Web\*.csproj'
+        projects: '**\src\Web\Web.csproj'
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish'
@@ -52,7 +52,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: 'build'
-        projects: '**\src\PublicApi\*.csproj'
+        projects: '**\src\PublicApi\PublicApi.csproj'
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish'
