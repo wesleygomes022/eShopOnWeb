@@ -34,7 +34,7 @@ jobs:
         run: dotnet build --configuration release --no-restore
         
       - name: dotnet publish 
-        run: dotnet publish eShopOnWeb.sln -c Release --no-build --no-restore --output ${{ github.workspace }}/drop
+        run: dotnet publish -c Release -o ./output 
         
       - name: Upload artifact
         uses: actions/upload-artifact@v1
