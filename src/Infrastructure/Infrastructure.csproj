@@ -12,7 +12,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
-	</ItemGroup>
+            <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
 	</ItemGroup>
