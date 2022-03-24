@@ -16,6 +16,7 @@ This reference application is meant to support the free .PDF download ebook: [Ar
 
 You can also read the book in online pages at the .NET docs here: 
 https://docs.microsoft.com/dotnet/architecture/modern-web-apps-azure/
+1
 
 [<img src="https://user-images.githubusercontent.com/782127/74948402-48512c80-53ca-11ea-948a-58d037440888.png" height="300" />](https://dotnet.microsoft.com/learn/web/aspnet-architecture)
 
