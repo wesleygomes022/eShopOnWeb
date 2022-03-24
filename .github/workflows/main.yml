@@ -37,24 +37,22 @@ jobs:
         run: dotnet build --configuration release --no-restore
         
       - name: dotnet publish 
-        run: dotnet publish src\PublicApi\PublicApi.csproj -c Release -o ./output 
+        run: dotnet publish src\PublicApi\PublicApi.csproj -c Release -o output\api 
         
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with: 
           name: API
-          path: output/
-          
-      #---------------------------------------------------------------------------------------
-      
+          path: output\api
+    
       - name: dotnet publish 
-        run: dotnet publish src\Web\Web.csproj -c Release -o ./output 
+        run: dotnet publish src\Web\Web.csproj -c Release -o output\web 
         
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with: 
           name: Web
-          path: output/
+          path: output\web
           
       - name: Azure Login
         uses: Azure/login@v1
@@ -65,13 +63,10 @@ jobs:
         uses: Azure/webapps-deploy@v2
         with:
           app-name: eShopOnWeb1
-          package: output/API  
+          package: output\API  
           
       - name: Azure WebApp
         uses: Azure/webapps-deploy@v2
         with:
           app-name: eShopOnWebII
-          package: output/Web  
-          
-        
-          
+          package: output/Web
