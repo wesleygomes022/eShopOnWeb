@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  name: 'Wesley Agent'
+  name: 'wgomesAgent'
 
 variables:
   solution: '**/*.sln'
